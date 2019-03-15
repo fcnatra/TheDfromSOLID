@@ -4,7 +4,6 @@
     {
         string TemporalFolder { get; }
         double ReadingIntervalInMs { get; }
-
         void UpdateInformation();
     }
 }

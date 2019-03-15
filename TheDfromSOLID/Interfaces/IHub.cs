@@ -1,7 +1,9 @@
-﻿namespace TheDfromSOLID.Interfaces
+﻿using System.Collections.Generic;
+
+namespace TheDfromSOLID.Interfaces
 {
     public interface IHub
     {
-        string ReadFromHub();
+        IEnumerable<string> ReadFromHub();
     }
 }

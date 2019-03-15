@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using TheDfromSOLID.Interfaces;
 
 namespace TheDfromSOLID
@@ -9,19 +10,36 @@ namespace TheDfromSOLID
 
         static void Main(string[] args)
         {
-            configuration = InitializeConfiguration();
-            InputHub inputHub = StartListeningOnInputHub();
+            ConfigureTraceSystem();
 
-            PressAnyKeyToExit();
-
-            inputHub.StopListening();
+            RunSystem();
 
             Console.WriteLine("Program terminated.");
         }
 
-        private static InputHub StartListeningOnInputHub()
+        private static void RunSystem()
         {
-            var inputHub = new InputHub { Configuration = configuration };
+            configuration = InitializeConfiguration();
+
+            InputHubReader inputHub = StartListeningOnInputHub();
+            
+            PressAnyKeyToExit();
+
+            inputHub.Dispose();
+        }
+
+        private static void ConfigureTraceSystem()
+        {
+            Trace.Listeners.Add(new ConsoleTraceListener());
+        }
+
+        private static InputHubReader StartListeningOnInputHub()
+        {
+            var inputHub = new InputHubReader
+            {
+                Configuration = configuration,
+                Hub = new Services.MachineProcessesHub()
+            };
             inputHub.StartListening();
             return inputHub;
         }
