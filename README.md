@@ -6,4 +6,5 @@ The idea is to show how this works on C#, decoupling all dependencies from a cla
 InputHubReader
   Dependencies: Hub, Configuration, DumpSystem
 
-Al arrancar el programa, pasarle las implementaciones (dependencias) que necesita.
+On program start, pass to InputHubReader the implementations it needs.
+
