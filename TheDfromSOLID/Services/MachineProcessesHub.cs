@@ -1,19 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using TheDfromSOLID.Interfaces;
 
 namespace TheDfromSOLID.Services
 {
     internal class MachineProcessesHub : IHub
     {
-        IEnumerable<string> IHub.ReadFromHub()
+        public IEnumerable<string> ReadFromHub()
         {
             var processes = Process.GetProcesses();
-            var processesNames = new List<string>();
-            foreach (var process in processes)
-                processesNames.Add(process.ProcessName);
-
-            return processesNames;
+            return processes.Select(process => process.ProcessName);
         }
     }
 }
