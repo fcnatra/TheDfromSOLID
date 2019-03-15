@@ -38,7 +38,8 @@ namespace TheDfromSOLID
             var inputHub = new InputHubReader
             {
                 Configuration = configuration,
-                Hub = new Services.MachineProcessesHub()
+                Hub = new Services.MachineProcessesHub(),
+                DumpSystem = new Services.FileDumpSystem()
             };
             inputHub.StartListening();
             return inputHub;

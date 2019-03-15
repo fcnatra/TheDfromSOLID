@@ -2,7 +2,7 @@
 {
     internal interface IDumpSystem
     {
-        string Name { get; set; }
+        string DumpElementName { get; set; }
         void DumpContent(string content);
     }
 }

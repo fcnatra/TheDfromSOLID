@@ -41,10 +41,13 @@ namespace TheDfromSOLID
         private void DumpHubContent()
         {
             Trace.WriteLine($"Reading from Hub {Hub.GetType().Name}", _traceCategory);
+
             IEnumerable<string> info = Hub.ReadFromHub();
 
             string dumpContentProcessed = ConvertToDumpContent(info);
 
+            var dumpName = $"{Configuration.TemporalFolder}\\TheDFromSOLID\\{DateTime.Now.Minute}.dump";
+            DumpSystem.DumpElementName = dumpName;
             DumpSystem.DumpContent(dumpContentProcessed);
         }
 
