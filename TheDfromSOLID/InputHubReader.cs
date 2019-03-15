@@ -46,7 +46,7 @@ namespace TheDfromSOLID
 
             string dumpContentProcessed = ConvertToDumpContent(info);
 
-            var dumpName = $"{Configuration.TemporalFolder}\\TheDFromSOLID\\{DateTime.Now.Minute}.dump";
+            var dumpName = $"{Configuration.TemporalFolder}\\{DateTime.Now.Minute}.dump";
             DumpSystem.DumpElementName = dumpName;
             DumpSystem.DumpContent(dumpContentProcessed);
         }

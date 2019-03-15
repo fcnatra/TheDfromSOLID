@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using TheDfromSOLID.Interfaces;
+using TheDfromSOLID.Services;
 
 namespace TheDfromSOLID
 {
@@ -10,6 +11,7 @@ namespace TheDfromSOLID
 
         static void Main(string[] args)
         {
+            configuration = InitializeConfiguration();
             ConfigureTraceSystem();
 
             RunSystem();
@@ -17,20 +19,25 @@ namespace TheDfromSOLID
             Console.WriteLine("Program terminated.");
         }
 
+        private static void ConfigureTraceSystem()
+        {
+            Trace.Listeners.Add(new ConsoleTraceListener());
+
+            var dumpSystemTraceListener = new DumpSystemTraceListener
+            {
+                Configuration = configuration,
+                DumpSystem = new Services.FileDumpSystem()
+            };
+            Trace.Listeners.Add(dumpSystemTraceListener);
+        }
+
         private static void RunSystem()
         {
-            configuration = InitializeConfiguration();
-
             InputHubReader inputHub = StartListeningOnInputHub();
             
             PressAnyKeyToExit();
 
             inputHub.Dispose();
-        }
-
-        private static void ConfigureTraceSystem()
-        {
-            Trace.Listeners.Add(new ConsoleTraceListener());
         }
 
         private static InputHubReader StartListeningOnInputHub()

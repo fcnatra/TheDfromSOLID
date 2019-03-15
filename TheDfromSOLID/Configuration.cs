@@ -14,10 +14,8 @@ namespace TheDfromSOLID
 
         public void UpdateInformation()
         {
-            TemporalFolder = Environment.GetEnvironmentVariable("TEMP");
+            TemporalFolder = Environment.GetEnvironmentVariable("TEMP") + "\\TheDfromSOLID";
             ReadingIntervalInMs = 3000;
         }
     }
-
-
 }
