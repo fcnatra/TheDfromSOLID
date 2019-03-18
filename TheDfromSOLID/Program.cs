@@ -19,6 +19,13 @@ namespace TheDfromSOLID
             Console.WriteLine("Program terminated.");
         }
 
+        private static IConfiguration InitializeConfiguration()
+        {
+            IConfiguration configuration = new Configuration();
+            configuration.UpdateInformation();
+            return configuration;
+        }
+
         private static void ConfigureTraceSystem()
         {
             Trace.Listeners.Add(new ConsoleTraceListener());
@@ -50,13 +57,6 @@ namespace TheDfromSOLID
             };
             inputHub.StartListening();
             return inputHub;
-        }
-
-        private static IConfiguration InitializeConfiguration()
-        {
-            IConfiguration configuration = new Configuration();
-            configuration.UpdateInformation();
-            return configuration;
         }
 
         private static void PressAnyKeyToExit()
