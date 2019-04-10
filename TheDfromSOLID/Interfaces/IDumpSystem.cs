@@ -1,6 +1,6 @@
 ﻿namespace TheDfromSOLID.Interfaces
 {
-    internal interface IDumpSystem
+    public interface IDumpSystem
     {
         string DumpElementName { get; set; }
         void DumpContent(string content);

@@ -7,7 +7,7 @@ using TheDfromSOLID.Interfaces;
 
 namespace TheDfromSOLID
 {
-    internal class InputHubReader : IDisposable
+    public class InputHubReader : IDisposable
     {
         private readonly string _traceCategory;
         private Timer timer = new Timer();
@@ -29,8 +29,10 @@ namespace TheDfromSOLID
             CheckIAmNotAlreadyListening();
 
             timer = new Timer { Interval = Configuration.ReadingIntervalInMs };
-            timer.Start();
             timer.Elapsed += Timer_Elapsed;
+
+            DumpHubContent();
+            timer.Start();
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -42,10 +44,13 @@ namespace TheDfromSOLID
         {
             Trace.WriteLine($"Reading from Hub {Hub.GetType().Name}", _traceCategory);
 
-            IEnumerable<string> info = Hub.ReadFromHub();
+            IEnumerable<string> data = Hub.ReadFromHub();
+            string dataProcessed = ConvertToDumpContent(data);
+            DumpData(dataProcessed);
+        }
 
-            string dumpContentProcessed = ConvertToDumpContent(info);
-
+        private void DumpData(string dumpContentProcessed)
+        {
             var dumpName = $"{Configuration.TemporalFolder}\\{DateTime.Now.Minute}.dump";
             DumpSystem.DumpElementName = dumpName;
             DumpSystem.DumpContent(dumpContentProcessed);
@@ -55,7 +60,7 @@ namespace TheDfromSOLID
         {
             var builder = new StringBuilder();
             foreach (var item in info)
-                builder.Append($"{item}\r\n");
+                builder.Append($"{item}{Environment.NewLine}");
 
             return builder.ToString();
         }

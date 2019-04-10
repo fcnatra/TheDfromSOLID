@@ -1,6 +1,6 @@
 ﻿namespace TheDfromSOLID.Interfaces
 {
-    internal interface IConfiguration
+    public interface IConfiguration
     {
         string TemporalFolder { get; }
         double ReadingIntervalInMs { get; }

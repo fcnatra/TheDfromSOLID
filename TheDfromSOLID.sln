@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheDfromSOLID", "TheDfromSOLID\TheDfromSOLID.csproj", "{D4A42C10-0EBA-4C49-94A0-23BE8DCD15AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheDFromSolidTests", "TheDFromSolidTests\TheDFromSolidTests.csproj", "{D7C91077-84A0-4FFA-B782-B6027ABC874A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D4A42C10-0EBA-4C49-94A0-23BE8DCD15AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4A42C10-0EBA-4C49-94A0-23BE8DCD15AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4A42C10-0EBA-4C49-94A0-23BE8DCD15AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7C91077-84A0-4FFA-B782-B6027ABC874A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7C91077-84A0-4FFA-B782-B6027ABC874A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7C91077-84A0-4FFA-B782-B6027ABC874A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7C91077-84A0-4FFA-B782-B6027ABC874A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
