@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TheDfromSOLID;
 using System.Threading;
 using System;
+using System.Linq;
 
 namespace TheDFromSolidTests
 {
@@ -14,11 +15,11 @@ namespace TheDFromSolidTests
         public static IEnumerable<object[]> _inputOutputData => new List<object[]>
         {
             new object[] {
-                new List<string> {"Any text" },
+                new List<string> {"Any Text" },
                 $"Any Text{Environment.NewLine}"
             },
             new object[] {
-                new List<string> {"Any text","Two Lines" },
+                new List<string> {"Any Text","Two Lines" },
                 $"Any Text{Environment.NewLine}Two Lines{Environment.NewLine}"
             },
         };
@@ -58,7 +59,6 @@ namespace TheDFromSolidTests
         {
             var readingIntervalInMs = 10;
             var testWaitingTimeInMs = readingIntervalInMs/2;
-
             IHub fakeHub = A.Fake<IHub>();
             A.CallTo(() => fakeHub.ReadFromHub()).Returns(inputContent);
 
@@ -78,10 +78,7 @@ namespace TheDFromSolidTests
             Thread.Sleep(testWaitingTimeInMs);
             hubReader.StopListening();
 
-            A.CallTo(() => fakeDumpSystem.DumpContent(
-                A<string>
-                .That
-                .IsEqualTo<string>(expectedResult)))
+            A.CallTo(() => fakeDumpSystem.DumpContent(expectedResult))
                 .MustHaveHappenedOnceExactly();
         }
 
@@ -91,11 +88,23 @@ namespace TheDFromSolidTests
             var inputContent = new List<string> { "Any text" };
             var expectedResult = "Any text" + Environment.NewLine;
             var readingIntervalInMs = 10;
-            var largerReadingIntervalInMs = 20000;
-            var testWaitingTimeInMs = readingIntervalInMs * 2;
+            var testWaitingTimeInMs = (int)(readingIntervalInMs * 2.5);
+            var largerReadingIntervalInMs = readingIntervalInMs * 1000;
+            var readingIntervals = new List<double>();
+            DateTime? lastReadMoment = null;
 
             IHub fakeHub = A.Fake<IHub>();
-            A.CallTo(() => fakeHub.ReadFromHub()).Returns(inputContent);
+            A.CallTo(() => fakeHub.ReadFromHub())
+                .Invokes(() =>
+                {
+                    if(lastReadMoment.HasValue)
+                    {
+                        var lastReadingInterval = DateTime.Now.Subtract(lastReadMoment.Value).TotalMilliseconds;
+                        readingIntervals.Add(lastReadingInterval);
+                    }
+                    lastReadMoment = DateTime.Now;
+                })
+                .Returns(inputContent);
 
             IConfiguration fakeConfig = A.Fake<IConfiguration>();
             A.CallTo(() => fakeConfig.ReadingIntervalInMs).Returns(readingIntervalInMs);
@@ -108,20 +117,20 @@ namespace TheDFromSolidTests
                 Configuration = fakeConfig,
                 DumpSystem = fakeDumpSystem
             };
-
             hubReader.StartListening();
 
+            Thread.Sleep(testWaitingTimeInMs);
             A.CallTo(() => fakeConfig.ReadingIntervalInMs).Returns(largerReadingIntervalInMs);
             Thread.Sleep(testWaitingTimeInMs);
 
             hubReader.StopListening();
 
-            A.CallTo(() => fakeDumpSystem.DumpContent(
-                A<string>
-                .That
-                .IsEqualTo(expectedResult)))
-                .MustHaveHappened(3, Times.Exactly);
-        }
+            var differenceWithOriginal = (readingIntervalInMs - readingIntervals.Max());
+            var differenceWithLarger = (largerReadingIntervalInMs - readingIntervals.Max());
 
+            var isCloserToOriginal = differenceWithLarger > differenceWithOriginal;
+
+            Assert.IsTrue(isCloserToOriginal);
+        }
     }
 }
