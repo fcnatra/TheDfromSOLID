@@ -43,9 +43,9 @@ namespace TheDFromSolidTests
             };
 
             var now = DateTime.Now;
-            hubReader.StartListening();
+            hubReader.StartReading();
             Thread.Sleep(testWaitingTimeInMs);
-            hubReader.StopListening();
+            hubReader.StopReading();
             var elapsedMs = DateTime.Now.Subtract(now).TotalMilliseconds;
 
             Assert.IsTrue(elapsedMs < readingIntervalInMs);
@@ -74,9 +74,9 @@ namespace TheDFromSolidTests
                 DumpSystem = fakeDumpSystem
             };
 
-            hubReader.StartListening();
+            hubReader.StartReading();
             Thread.Sleep(testWaitingTimeInMs);
-            hubReader.StopListening();
+            hubReader.StopReading();
 
             A.CallTo(() => fakeDumpSystem.DumpContent(expectedResult))
                 .MustHaveHappenedOnceExactly();
@@ -117,13 +117,13 @@ namespace TheDFromSolidTests
                 Configuration = fakeConfig,
                 DumpSystem = fakeDumpSystem
             };
-            hubReader.StartListening();
+            hubReader.StartReading();
 
             Thread.Sleep(testWaitingTimeInMs);
             A.CallTo(() => fakeConfig.ReadingIntervalInMs).Returns(largerReadingIntervalInMs);
             Thread.Sleep(testWaitingTimeInMs);
 
-            hubReader.StopListening();
+            hubReader.StopReading();
 
             var differenceWithOriginal = (readingIntervalInMs - readingIntervals.Max());
             var differenceWithLarger = (largerReadingIntervalInMs - readingIntervals.Max());

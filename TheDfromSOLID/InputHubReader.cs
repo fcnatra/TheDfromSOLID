@@ -22,11 +22,11 @@ namespace TheDfromSOLID
             _traceCategory = this.GetType().Name;
         }
 
-        public void StartListening()
+        public void StartReading()
         {
-            Trace.WriteLine("Start listening", _traceCategory);
+            Trace.WriteLine("Start reading", _traceCategory);
 
-            CheckIAmNotAlreadyListening();
+            CheckIAmNotAlreadyReading();
 
             timer = new Timer { Interval = Configuration.ReadingIntervalInMs };
             timer.Elapsed += Timer_Elapsed;
@@ -65,23 +65,23 @@ namespace TheDfromSOLID
             return builder.ToString();
         }
 
-        private void CheckIAmNotAlreadyListening()
+        private void CheckIAmNotAlreadyReading()
         {
-            if (timer.Enabled) throw new InvalidOperationException("This instance is already listening.");
+            if (timer.Enabled) throw new InvalidOperationException("This instance is already reading from the hub.");
         }
 
-        public void StopListening()
+        public void StopReading()
         {
             if (!timer.Enabled) return;
 
-            Trace.WriteLine("Stop listening", _traceCategory);
+            Trace.WriteLine("Stop reading", _traceCategory);
             timer.Stop();
             timer.Dispose();
         }
 
         public void Dispose()
         {
-            StopListening();
+            StopReading();
             Trace.WriteLine("Disposing InputHub Reader", _traceCategory);
         }
     }

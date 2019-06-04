@@ -12,6 +12,7 @@ namespace TheDfromSOLID
         static void Main(string[] args)
         {
             configuration = InitializeConfiguration();
+
             ConfigureTraceSystem();
 
             RunSystem();
@@ -22,7 +23,7 @@ namespace TheDfromSOLID
         private static IConfiguration InitializeConfiguration()
         {
             IConfiguration configuration = new Configuration();
-            configuration.UpdateInformation();
+            configuration.ReloadInformation();
             return configuration;
         }
 
@@ -40,14 +41,16 @@ namespace TheDfromSOLID
 
         private static void RunSystem()
         {
-            InputHubReader inputHub = StartListeningOnInputHub();
-            
+            InputHubReader inputHub = GetInputHubReader();
+
+            inputHub.StartReading();
+
             PressAnyKeyToExit();
 
             inputHub.Dispose();
         }
 
-        private static InputHubReader StartListeningOnInputHub()
+        private static InputHubReader GetInputHubReader()
         {
             var inputHub = new InputHubReader
             {
@@ -55,7 +58,7 @@ namespace TheDfromSOLID
                 Hub = new Services.MachineProcessesHub(),
                 DumpSystem = new Services.FileDumpSystem()
             };
-            inputHub.StartListening();
+            
             return inputHub;
         }
 
